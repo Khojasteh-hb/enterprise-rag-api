@@ -1,4 +1,3 @@
-
 import os
 import time
 from dotenv import load_dotenv
@@ -15,7 +14,7 @@ def create_index(file_path: str):
     if not os.getenv("OPENAI_API_KEY"):
         raise ValueError("OPENAI_API_KEY not found in environment variables.")
 
-    print(" Loading document...")
+    print("Loading document...")
     loader = TextLoader(file_path)
     documents = loader.load()
 
@@ -26,21 +25,21 @@ def create_index(file_path: str):
     )
     chunks = splitter.split_documents(documents)
 
-    print(f"  Created {len(chunks)} chunks")
+    print(f"Created {len(chunks)} chunks")
 
-    print("🧠 Creating embeddings...")
+    print("Creating embeddings...")
     start_time = time.time()
 
     embeddings = OpenAIEmbeddings()
     vectorstore = FAISS.from_documents(chunks, embeddings)
 
     end_time = time.time()
-    print(f" Embedding time: {round(end_time - start_time, 2)} seconds")
+    print(f"Embedding time: {round(end_time - start_time, 2)} seconds")
 
-    print(" Saving FAISS index locally...")
+    print("Saving FAISS index locally...")
     vectorstore.save_local("faiss_index")
 
-    print(" Index created successfully!")
+    print("Index created successfully!")
 
 
 if __name__ == "__main__":
