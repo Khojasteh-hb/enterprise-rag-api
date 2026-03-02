@@ -1,0 +1,50 @@
+Industrial Pump Maintenance Manual
+
+Section 1: Overview
+This document describes the maintenance procedures for industrial centrifugal pumps used in manufacturing environments. Proper maintenance ensures reliability, efficiency, and reduced downtime.
+
+Section 2: Common Failure Modes
+1. Bearing wear due to insufficient lubrication.
+2. Seal leakage caused by pressure imbalance.
+3. Overheating due to improper cooling.
+4. Cavitation resulting from incorrect suction pressure.
+5. Vibration caused by shaft misalignment.
+
+Section 3: Preventive Maintenance Schedule
+Daily:
+- Inspect pump for abnormal vibration.
+- Monitor temperature levels.
+- Check for unusual noise.
+
+Weekly:
+- Verify lubrication levels.
+- Inspect seals and gaskets.
+- Check alignment.
+
+Monthly:
+- Conduct vibration analysis.
+- Perform thermal inspection.
+- Review operating logs.
+
+Section 4: Troubleshooting
+Problem: Excessive vibration
+Possible Causes:
+- Misalignment
+- Bearing damage
+- Imbalanced impeller
+
+Recommended Action:
+- Check shaft alignment
+- Inspect bearings
+- Rebalance impeller
+
+Problem: Overheating
+Possible Causes:
+- Blocked cooling system
+- Low lubrication
+- Excess load
+
+Recommended Action:
+- Clean cooling channels
+- Refill lubrication
+- Reduce operating load
