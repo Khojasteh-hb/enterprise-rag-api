@@ -4,16 +4,13 @@ from dotenv import load_dotenv
 
 from langchain_community.document_loaders import TextLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-# from langchain_openai import OpenAIEmbeddings
+
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
 
 
 def create_index(file_path: str):
     load_dotenv()
-
-   # if not os.getenv("OPENAI_API_KEY"):
-   #     raise ValueError("OPENAI_API_KEY not found in environment variables.")
 
     print("Loading document...")
     loader = TextLoader(file_path)
@@ -30,8 +27,6 @@ def create_index(file_path: str):
 
     print("Creating embeddings...")
     start_time = time.time()
-
-   # embeddings = OpenAIEmbeddings()
 
     embeddings = HuggingFaceEmbeddings(
     model_name="sentence-transformers/all-MiniLM-L6-v2"
