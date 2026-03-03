@@ -1,7 +1,10 @@
+
 from fastapi import FastAPI
 from pydantic import BaseModel
 from langchain_community.vectorstores import FAISS
 from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_community.chat_models import ChatOllama
+from langchain_core.messages import HumanMessage
 
 app = FastAPI(title="Enterprise RAG API")
 
@@ -26,19 +29,34 @@ def load_vectorstore():
 
 vectorstore = load_vectorstore()
 
+llm = ChatOllama(
+    model="mistral",
+    base_url="http://172.19.32.1:11434"
+)
 
 @app.post("/ask")
+
 def ask_question(request: QuestionRequest):
     docs = vectorstore.similarity_search(request.question, k=3)
 
-    results = [
-        {
-            "content": doc.page_content
-        }
-        for doc in docs
-    ]
+    context = "\n\n".join([doc.page_content for doc in docs])
+
+    prompt = f"""
+You are an industrial maintenance assistant.
+Use the following context to answer the question clearly and concisely.
+
+Context:
+{context}
+
+Question:
+{request.question}
+
+Answer:
+"""
+
+    response = llm.invoke([HumanMessage(content=prompt)])
 
     return {
         "question": request.question,
-        "results": results
+        "answer": response.content
     }
