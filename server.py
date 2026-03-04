@@ -1,4 +1,4 @@
-
+import os
 from fastapi import FastAPI
 from pydantic import BaseModel
 from langchain_community.vectorstores import FAISS
@@ -29,9 +29,11 @@ def load_vectorstore():
 
 vectorstore = load_vectorstore()
 
+ollama_base = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
+
 llm = ChatOllama(
     model="mistral",
-    base_url="http://172.19.32.1:11434"
+    base_url=ollama_base
 )
 
 @app.post("/ask")
