@@ -1,7 +1,10 @@
 import os
 from langchain_community.vectorstores import FAISS
 from langchain_community.embeddings import HuggingFaceEmbeddings
-from langchain_core.documents import Document
+
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+INDEX_PATH = os.path.join(BASE_DIR, "vectorstore", "faiss_index")
 
 
 def load_vectorstore():
@@ -10,7 +13,7 @@ def load_vectorstore():
     )
 
     vectorstore = FAISS.load_local(
-        "faiss_index",
+        INDEX_PATH,
         embeddings,
         allow_dangerous_deserialization=True
     )
@@ -18,26 +21,11 @@ def load_vectorstore():
     return vectorstore
 
 
-def query_index(question: str):
+def query_index(question: str, k: int = 3):
     vectorstore = load_vectorstore()
 
-    docs = vectorstore.similarity_search(question, k=3)
+    docs = vectorstore.similarity_search(question, k=k)
 
-    print("\nTop relevant chunks:\n")
+    results = [doc.page_content for doc in docs]
 
-    for i, doc in enumerate(docs, 1):
-        print(f"Result {i}:")
-        print(doc.page_content)
-        print("-" * 50)
-
-
-if __name__ == "__main__":
-    print("RAG CLI ready. Type your question (or 'exit' to quit):\n")
-
-    while True:
-        question = input(">> ")
-
-        if question.lower() == "exit":
-            break
-
-        query_index(question)
+    return results
