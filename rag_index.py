@@ -43,4 +43,4 @@ def create_index(file_path: str):
 
 
 if __name__ == "__main__":
-    create_index("sample.txt")
+    create_index("data/sample.txt")
