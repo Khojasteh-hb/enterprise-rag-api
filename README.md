@@ -1,56 +1,190 @@
-# Enterprise RAG System with Local LLM
+# Enterprise RAG API
 
+A modular Retrieval-Augmented Generation (RAG) system for answering industrial maintenance questions using a local LLM, FAISS vector search, and FastAPI.
 
-![Python](https://img.shields.io/badge/Python-3.10-blue)
-![FastAPI](https://img.shields.io/badge/API-FastAPI-009688)
-![LangChain](https://img.shields.io/badge/LLM-LangChain-orange)
-![VectorDB](https://img.shields.io/badge/Vector%20Database-FAISS-red)
-![Model](https://img.shields.io/badge/Model-Mistral-purple)
-![Deployment](https://img.shields.io/badge/Deployment-Docker-blue)
-
-
-## 1. Overview
-
-This project implements a Retrieval-Augmented Generation (RAG) system using a local Large Language Model. The system retrieves relevant information from a document corpus using
- vector similarity search and generates answers based on the retrieved context.
-
-The pipeline combines document ingestion, text chunking, embedding generation, FAISS vector indexing, and a local Mistral model served via Ollama. A FastAPI service exposes
- the system through a REST API that allows users to query the knowledge base using natural language.
-
-The project demonstrates how enterprise documentation or operational manuals can be transformed into an interactive AI-powered knowledge assistant.
+This project demonstrates a complete RAG pipeline including document ingestion, vector indexing, retrieval, and LLM-based answer generation.
 
 ---
 
-## 2. Architecture
+## Architecture
+
+User Question  
+↓  
+Embedding Model (Sentence Transformers)  
+↓  
+FAISS Vector Store  
+↓  
+Top-K Relevant Chunks  
+↓  
+LLM (Mistral via Ollama)  
+↓  
+Generated Answer  
+
+---
+
+## Tech Stack
+
+- Python
+- FastAPI
+- FAISS
+- LangChain
+- Sentence Transformers
+- Ollama (local LLM runtime)
+- Docker
+- Uvicorn
+
+---
+
+## Project Structure
 
 ```text
-   User Query
-      │
-      ▼
-   FastAPI REST API
-      │
-      ▼
-   Query Processing
-      │
-      ▼
-   Vector Similarity Search (FAISS)
-      │
-      ▼
-   Retrieve Top-K Relevant Chunks
-      │
-      ▼
-   Prompt Construction
-      │
-      ▼
-   Local LLM (Mistral via Ollama)
-      │
-      ▼
-   Generated Answer
-      │
-      ▼
-   JSON Response
+enterprise-rag
+│
+├── app
+│ ├── server.py
+│ ├── ask.py
+│ ├── build_index.py
+│ └── cli.py
+│
+├── data
+│ └── sample.txt
+│
+├── vectorstore
+│ └── faiss_index
+│
+├── tests
+│ └── evaluate_rag.py
+│
+├── images
+│ ├── api_example-1.png
+│ ├── api_example-2.png
+│ ├── api_example-3.png
+│ └── evaluation.png
+│
+├── Dockerfile
+├── docker-compose.yml
+├── requirements.txt
+└── README.md
 
 ```
 
 ---
+
+## Setup
+
+### Clone the repository:
+
+```bash
+git clone <repo-url>
+cd enterprise-rag
+```
+
+### Create virtual environment:
+
+```bash
+python -m venv venv
+source venv/bin/activate
+```
+
+### Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+### Start Ollama
+
+Make sure Ollama is running before starting the API.
+
+```bash
+ollama serve
+ollama pull mistral
+```
+
+### Build Vector Index
+
+```bash
+ python app/build_index.py
+```
+
+### Run the API
+
+```bash
+uvicorn app.server:app --reload
+```
+
+API endpoint:
+
+```bash
+http://localhost:8000
+```
+
+Swagger documentation:
+
+```bash
+http://localhost:8000/docs
+```
+
+---
+
+## Example API Request
+
+```bash
+curl -X POST http://localhost:8000/ask \
+-H "Content-Type: application/json" \
+-d '{"question":"What is preventive maintenance?"}'
+```
+
+Example response:
+
+```json
+{
+  "question": "...",
+  "answer": "..."
+}
+```
+
+---
+
+## Evaluation
+
+A simple evaluation script is included to test the RAG pipeline.
+
+Run:
+
+```bash
+python tests/evaluate_rag.py
+```
+
+### The script sends sample questions to the API and reports:
+
+   - generated answers
+
+   - response latency
+
+### Hardware used for evaluation:
+
+   - CPU-only inference
+
+   - Model: Mistral (Ollama)
+
+   - Embedding: sentence-transformers/all-MiniLM-L6-v2
+
+   - Vector store: FAISS
+
+Example output:
+![API Evaluation](images/evaluation.png)
+
+---
+
+## Future Improvements
+
+   - RAG evaluation metrics (RAGAS)
+
+   - Hybrid retrieval
+
+   - Caching layer
+
+   - GPU inference support
+
 
