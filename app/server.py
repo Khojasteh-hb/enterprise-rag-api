@@ -39,7 +39,7 @@ vectorstore = load_vectorstore()
 
 
 # Ollama connection
-ollama_base = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
+ollama_base = os.getenv("OLLAMA_BASE_URL", "http://172.19.32.1:11434")
 
 llm = ChatOllama(
     model="mistral",
