@@ -1,5 +1,13 @@
 # Enterprise RAG API
 
+![Python](https://img.shields.io/badge/Python-3.10-blue)
+![FastAPI](https://img.shields.io/badge/FastAPI-API-green)
+![FAISS](https://img.shields.io/badge/Vector%20DB-FAISS-orange)
+![LLM](https://img.shields.io/badge/LLM-Mistral-purple)
+![RAG](https://img.shields.io/badge/Architecture-RAG-red)
+![Docker](https://img.shields.io/badge/Docker-ready-blue)
+
+
 A modular Retrieval-Augmented Generation (RAG) system for answering industrial maintenance questions using a local LLM, FAISS vector search, and FastAPI.
 
 This project demonstrates a complete RAG pipeline including document ingestion, vector indexing, retrieval, and LLM-based answer generation.
