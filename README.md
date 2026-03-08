@@ -8,25 +8,28 @@
 ![Docker](https://img.shields.io/badge/Docker-ready-blue)
 
 
-A modular Retrieval-Augmented Generation (RAG) system for answering industrial maintenance questions using a local LLM, FAISS vector search, and FastAPI.
+A modular **Retrieval-Augmented Generation (RAG)** system for answering industrial maintenance questions using a local LLM, FAISS vector search, and FastAPI.
 
-This project demonstrates a complete RAG pipeline including document ingestion, vector indexing, retrieval, and LLM-based answer generation.
+This project demonstrates how to build a complete RAG pipeline including:
+
+- document ingestion
+- semantic vector indexing
+- retrieval
+- LLM-based answer generation
+- evaluation of system responses
 
 ---
 
 ## Architecture
 
-User Question  
-↓  
-Embedding Model (Sentence Transformers)  
-↓  
-FAISS Vector Store  
-↓  
-Top-K Relevant Chunks  
-↓  
-LLM (Mistral via Ollama)  
-↓  
-Generated Answer  
+```mermaid
+flowchart TD
+A[User Question] --> B[Embedding Model]
+B --> C[FAISS Vector Store]
+C --> D[Top K Relevant Chunks]
+D --> E[LLM - Mistral via Ollama]
+E --> F[Generated Answer]
+``` 
 
 ---
 
@@ -78,56 +81,11 @@ enterprise-rag
 
 ---
 
-## Setup
+## API Documentation
 
-### Clone the repository:
+The API is automatically documented using FastAPI Swagger UI.
 
-```bash
-git clone <repo-url>
-cd enterprise-rag
-```
-
-### Create virtual environment:
-
-```bash
-python -m venv venv
-source venv/bin/activate
-```
-
-### Install dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
-### Start Ollama
-
-Make sure Ollama is running before starting the API.
-
-```bash
-ollama serve
-ollama pull mistral
-```
-
-### Build Vector Index
-
-```bash
- python app/build_index.py
-```
-
-### Run the API
-
-```bash
-uvicorn app.server:app --reload
-```
-
-API endpoint:
-
-```bash
-http://localhost:8000
-```
-
-Swagger documentation:
+Swagger UI:
 
 ```bash
 http://localhost:8000/docs
@@ -185,6 +143,69 @@ Example output:
 
 ---
 
+## Setup
+
+### Clone the repository:
+
+```bash
+git clone <repo-url>
+cd enterprise-rag
+```
+
+### Create virtual environment:
+
+```bash
+python -m venv venv
+source venv/bin/activate
+```
+
+### Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+## Start Ollama
+
+Make sure Ollama is running before starting the API.
+
+```bash
+ollama serve
+ollama pull mistral
+```
+
+--- 
+
+## Build Vector Index
+
+```bash
+ python app/build_index.py
+```
+
+---
+
+## Run the API
+
+```bash
+uvicorn app.server:app --reload
+```
+
+API endpoint:
+
+```bash
+http://localhost:8000
+```
+
+Swagger docs:
+
+```bash
+http://localhost:8000/docs
+```
+
+---
+
 ## Future Improvements
 
    - RAG evaluation metrics (RAGAS)
@@ -195,4 +216,5 @@ Example output:
 
    - GPU inference support
 
+---
 
