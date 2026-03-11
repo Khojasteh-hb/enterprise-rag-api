@@ -4,8 +4,9 @@ from pydantic import BaseModel
 
 from langchain_community.vectorstores import FAISS
 from langchain_community.embeddings import HuggingFaceEmbeddings
-from langchain_community.chat_models import ChatOllama
 from langchain_core.messages import HumanMessage
+
+from app.llm.provider import get_llm
 
 
 app = FastAPI(title="Enterprise RAG API")
@@ -38,13 +39,8 @@ def load_vectorstore():
 vectorstore = load_vectorstore()
 
 
-# Ollama connection
-ollama_base = os.getenv("OLLAMA_BASE_URL", "http://172.19.32.1:11434")
-
-llm = ChatOllama(
-    model="mistral",
-    base_url=ollama_base
-)
+# ---- LLM initialization ----
+llm = get_llm()
 
 
 @app.post("/ask")
