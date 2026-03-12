@@ -3,12 +3,13 @@
 ![Python](https://img.shields.io/badge/Python-3.10-blue)
 ![FastAPI](https://img.shields.io/badge/FastAPI-API-green)
 ![FAISS](https://img.shields.io/badge/Vector%20DB-FAISS-orange)
+![LangChain](https://img.shields.io/badge/LangChain-framework-yellow)
 ![LLM](https://img.shields.io/badge/LLM-Mistral-purple)
 ![RAG](https://img.shields.io/badge/Architecture-RAG-red)
 ![Docker](https://img.shields.io/badge/Docker-ready-blue)
 
 
-A modular **Retrieval-Augmented Generation (RAG)** system for answering industrial maintenance questions using a local LLM, FAISS vector search, and FastAPI.
+A modular **Retrieval-Augmented Generation (RAG)** system built with FastAPI, FAISS vector search, and LLM providers (OpenAI or Ollama).
 
 This project demonstrates how to build a complete RAG pipeline including:
 
@@ -24,25 +25,44 @@ This project demonstrates how to build a complete RAG pipeline including:
 
 ```mermaid
 flowchart TD
-A[User Question] --> B[Embedding Model]
-B --> C[FAISS Vector Store]
-C --> D[Top K Relevant Chunks]
-D --> E[LLM - Mistral via Ollama]
-E --> F[Generated Answer]
+    A[User Question]
+    B[FastAPI API]
+    C[FAISS Vector Search]
+    D[Relevant Context]
+    E[LLM Provider]
+    F[Generated Answer]
+
+    A --> B
+    B --> C
+    C --> D
+    D --> E
+    E --> F
+
+    E -->|OpenAI| F
+    E -->|Ollama| F
 ``` 
 
 ---
 
-## Tech Stack
+## Features
 
-- Python
-- FastAPI
-- FAISS
-- LangChain
-- Sentence Transformers
-- Ollama (local LLM runtime)
-- Docker
-- Uvicorn
+   - Retrieval-Augmented Generation (RAG)
+
+   - FAISS vector search
+
+   - HuggingFace sentence-transformer embeddings
+
+   - OpenAI support
+
+   - Ollama local model support
+
+   - LLM provider abstraction layer
+
+   - FastAPI REST API
+
+   - Docker & Docker Compose support
+
+   - Evaluation script for testing the RAG pipeline
 
 ---
 
@@ -52,28 +72,28 @@ E --> F[Generated Answer]
 enterprise-rag
 │
 ├── app
-│ ├── server.py
-│ ├── ask.py
-│ ├── build_index.py
-│ └── cli.py
+│   ├── server.py
+│   ├── ask.py
+│   ├── build_index.py
+│   ├── cli.py
+│   └── llm
+│       └── provider.py
 │
 ├── data
-│ └── sample.txt
+│   └── sample.txt
 │
 ├── vectorstore
-│ └── faiss_index
+│   └── faiss_index
 │
 ├── tests
-│ └── evaluate_rag.py
+│   └── evaluate_rag.py
 │
 ├── images
-│ ├── api_example-1.png
-│ ├── api_example-2.png
-│ ├── api_example-3.png
-│ └── evaluation.png
+│   └── evaluation.png
 │
 ├── Dockerfile
 ├── docker-compose.yml
+├── start.sh
 ├── requirements.txt
 └── README.md
 
@@ -81,16 +101,64 @@ enterprise-rag
 
 ---
 
-## API Documentation
+## Setup
 
-The API is automatically documented using FastAPI Swagger UI.
-
-Swagger UI:
+### Clone the repository:
 
 ```bash
-http://localhost:8000/docs
+git clone <repo-url>
+cd enterprise-rag
 ```
 
+### Create environment variables:
+
+```bash
+cp .env.example .env
+```
+Edit `.env` and add your OpenAI key if needed.
+
+### Running locally
+Activate the virtual environment:
+
+```bash
+source venv/bin/activate
+```
+
+### Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+#### Start Ollama
+
+Make sure Ollama is running before starting the API.
+
+```bash
+ollama run mistral
+```
+
+--- 
+
+### Build the FAISS index:
+
+```bash
+python app/build_index.py
+```
+
+### Start the API:
+
+```bash
+uvicorn app.server:app --reload
+```
+
+The API will be available at:
+
+```bash 
+http://localhost:8000
+```
 ---
 
 ## Example API Request
@@ -110,6 +178,21 @@ Example response:
 }
 ```
 
+---
+
+## Running with Docker
+
+Build and start the container:
+
+```bash 
+docker compose up --build
+```
+
+The API will be available at:
+
+```bash
+http://localhost:8000
+```
 ---
 
 ## Evaluation
@@ -132,7 +215,7 @@ python tests/evaluate_rag.py
 
    - CPU-only inference
 
-   - Model: Mistral (Ollama)
+   - LLM: Mistral (Ollama) or OpenAI models
 
    - Embedding: sentence-transformers/all-MiniLM-L6-v2
 
@@ -143,78 +226,59 @@ Example output:
 
 ---
 
-## Setup
+## LLM Providers
 
-### Clone the repository:
+The system supports multiple LLM providers.
+
+Configured via environment variables.
+
+### OpenAI
 
 ```bash
-git clone <repo-url>
-cd enterprise-rag
+LLM_PROVIDER=openai
+OPENAI_API_KEY=your_key
 ```
 
-### Create virtual environment:
+### Ollama
 
 ```bash
-python -m venv venv
-source venv/bin/activate
-```
-
-### Install dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
----
-
-## Start Ollama
-
-Make sure Ollama is running before starting the API.
-
-```bash
-ollama serve
-ollama pull mistral
-```
-
---- 
-
-## Build Vector Index
-
-```bash
- python app/build_index.py
+LLM_PROVIDER=ollama
+OLLAMA_BASE_URL=http://host.docker.internal:11434
 ```
 
 ---
 
-## Run the API
+## Environment Variables
 
-```bash
-uvicorn app.server:app --reload
-```
+Example `.env` configuration:
 
-API endpoint:
+```env
+LLM_PROVIDER=openai
+OPENAI_API_KEY=your_api_key
 
-```bash
-http://localhost:8000
-```
-
-Swagger docs:
-
-```bash
-http://localhost:8000/docs
+# optional for Ollama
+OLLAMA_BASE_URL=http://host.docker.internal:11434
 ```
 
 ---
 
 ## Future Improvements
 
-   - RAG evaluation metrics (RAGAS)
+   - Cloud deployment
 
-   - Hybrid retrieval
+   - Hybrid search (BM25 + vector search)
 
-   - Caching layer
+   - Streaming responses
 
-   - GPU inference support
+   - RAG evaluation metrics
+
+   - Better prompt engineering
+
+---
+
+## License
+
+MIT License
 
 ---
 
