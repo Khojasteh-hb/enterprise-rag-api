@@ -5,7 +5,13 @@ services:
     build: .
     ports:
       - "8000:8000"
+
+    env_file:
+      - .env
+
     volumes:
       - ./data:/app/data
+      - ./vectorstore:/app/vectorstore
+
     environment:
       - OLLAMA_BASE_URL=http://host.docker.internal:11434
