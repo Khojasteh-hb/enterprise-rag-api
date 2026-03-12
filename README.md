@@ -1,3 +1,4 @@
+
 # Enterprise RAG API
 
 ![Python](https://img.shields.io/badge/Python-3.10-blue)
@@ -23,23 +24,39 @@ This project demonstrates how to build a complete RAG pipeline including:
 
 ## Architecture
 
-```mermaid
-flowchart TD
-    A[User Question]
-    B[FastAPI API]
-    C[FAISS Vector Search]
-    D[Relevant Context]
-    E[LLM Provider]
-    F[Generated Answer]
-
-    A --> B
-    B --> C
-    C --> D
-    D --> E
-    E --> F
-
-    E -->|OpenAI| F
-    E -->|Ollama| F
+```
+                +-------------------+
+                |    User Query     |
+                +---------+---------+
+                          |
+                          v
+                +-------------------+
+                |    FastAPI API    |
+                +---------+---------+
+                          |
+                          v
+                +-------------------+
+                |   FAISS Retrieval |
+                |   (Vector Search) |
+                +---------+---------+
+                          |
+                          v
+                +-------------------+
+                |  Relevant Context |
+                +---------+---------+
+                          |
+                          v
+                +-------------------+
+                |    LLM Provider   |
+                |                   |
+                |  OpenAI / Ollama |
+                +---------+---------+
+                          |
+                          v
+                +-------------------+
+                |  Generated Answer |
+                +-------------------+
+                
 ``` 
 
 ---
