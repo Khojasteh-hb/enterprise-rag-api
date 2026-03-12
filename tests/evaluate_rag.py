@@ -1,7 +1,8 @@
+import os
 import requests
 import time
 
-API_URL = "http://localhost:8000/ask"
+API_URL = os.getenv("RAG_API_URL", "http://localhost:8000/ask")
 
 test_questions = [
     "What is preventive maintenance?",
@@ -22,6 +23,8 @@ def evaluate():
             API_URL,
             json={"question": question}
         )
+
+        response.raise_for_status()
 
         end = time.time()
 
