@@ -1,4 +1,3 @@
-
 # Enterprise RAG API
 
 ![Python](https://img.shields.io/badge/Python-3.10-blue)
@@ -8,9 +7,10 @@
 ![LLM](https://img.shields.io/badge/LLM-Mistral-purple)
 ![RAG](https://img.shields.io/badge/Architecture-RAG-red)
 ![Docker](https://img.shields.io/badge/Docker-ready-blue)
+![AWS](https://img.shields.io/badge/AWS-EC2-orange)
 
 
-A modular **Retrieval-Augmented Generation (RAG)** system built with FastAPI, FAISS vector search, and LLM providers (OpenAI or Ollama).
+A modular **Retrieval-Augmented Generation (RAG)** system built with FastAPI, FAISS vector search, and configurable LLM providers (OpenAI or Ollama).
 
 This project demonstrates how to build a complete RAG pipeline including:
 
@@ -19,6 +19,8 @@ This project demonstrates how to build a complete RAG pipeline including:
 - retrieval
 - LLM-based answer generation
 - evaluation of system responses
+
+The system is designed with a provider abstraction layer, allowing easy switching between cloud LLMs and local models via environment variables.
 
 ---
 
@@ -81,6 +83,8 @@ This project demonstrates how to build a complete RAG pipeline including:
 
    - Evaluation script for testing the RAG pipeline
 
+   - Deployable on AWS EC2
+
 ---
 
 ## Project Structure
@@ -124,7 +128,7 @@ enterprise-rag
 
 ```bash
 git clone <repo-url>
-cd enterprise-rag
+cd enterprise-rag-api
 ```
 
 ### Create environment variables:
@@ -149,9 +153,9 @@ pip install -r requirements.txt
 
 ---
 
-#### Start Ollama
+#### Start Ollama (Optional)
 
-Make sure Ollama is running before starting the API.
+If using local models, make sure Ollama is running:
 
 ```bash
 ollama run mistral
@@ -171,11 +175,18 @@ python app/build_index.py
 uvicorn app.server:app --reload
 ```
 
-The API will be available at:
+API will be available at:
 
 ```bash 
 http://localhost:8000
 ```
+
+Interactive API docs:
+
+```bash
+http://localhost:8000/docs
+```
+
 ---
 
 ## Example API Request
@@ -210,6 +221,47 @@ The API will be available at:
 ```bash
 http://localhost:8000
 ```
+
+Swagger documentation:
+
+```bash
+http://localhost:8000/docs
+```
+
+---
+
+## Deployment (AWS EC2)
+
+This project can be deployed on AWS EC2 using Docker.
+
+Example steps:
+
+```bash
+git clone https://github.com/Khojasteh-hb/enterprise-rag-api.git
+cd enterprise-rag-api
+
+cp .env.example .env
+```
+
+Configure `.env`:
+
+```bash
+LLM_PROVIDER=openai
+OPENAI_API_KEY=your_api_key
+```
+
+Start the service:
+
+```bash
+docker compose up -d --build
+```
+
+Access the API:
+
+```bash
+http://EC2_PUBLIC_IP:8000/docs
+```
+
 ---
 
 ## Evaluation
@@ -222,7 +274,7 @@ Run:
 python tests/evaluate_rag.py
 ```
 
-### The script sends sample questions to the API and reports:
+The script sends sample questions to the API and reports:
 
    - generated answers
 
@@ -234,7 +286,7 @@ python tests/evaluate_rag.py
 
    - LLM: Mistral (Ollama) or OpenAI models
 
-   - Embedding: sentence-transformers/all-MiniLM-L6-v2
+   - Embedding: `sentence-transformers/all-MiniLM-L6-v2`
 
    - Vector store: FAISS
 
@@ -245,9 +297,7 @@ Example output:
 
 ## LLM Providers
 
-The system supports multiple LLM providers.
-
-Configured via environment variables.
+The system supports multiple LLM providers configured via environment variables.
 
 ### OpenAI
 
@@ -281,15 +331,17 @@ OLLAMA_BASE_URL=http://host.docker.internal:11434
 
 ## Future Improvements
 
-   - Cloud deployment
-
    - Hybrid search (BM25 + vector search)
 
    - Streaming responses
 
    - RAG evaluation metrics
 
-   - Better prompt engineering
+   - Improved prompt engineering
+
+   - Web chat interface
+
+   - Observability and logging
 
 ---
 
@@ -298,4 +350,3 @@ OLLAMA_BASE_URL=http://host.docker.internal:11434
 MIT License
 
 ---
-
