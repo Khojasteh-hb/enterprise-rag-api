@@ -12,6 +12,10 @@
 
 A modular **Retrieval-Augmented Generation (RAG)** system built with FastAPI, FAISS vector search, and configurable LLM providers (OpenAI or Ollama).
 
+![RAG Demo](images/rag_demo.png)
+
+## Overview
+
 This project demonstrates how to build a complete RAG pipeline including:
 
 - document ingestion
