@@ -295,7 +295,7 @@ The script sends sample questions to the API and reports:
    - Vector store: FAISS
 
 Example output:
-![API Evaluation](images/evaluation.png)
+![API Evaluation](images/evaluation2.png)
 
 ---
 
