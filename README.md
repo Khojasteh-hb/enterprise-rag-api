@@ -213,7 +213,7 @@ Example response:
 
 ---
 
-##🖥LI Usage
+## CLI Usage
 
 In addition to the REST API, the system provides a command-line interface for direct interaction.
 
