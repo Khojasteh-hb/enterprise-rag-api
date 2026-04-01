@@ -18,6 +18,7 @@ A modular **Retrieval-Augmented Generation (RAG)** system built with FastAPI, FA
 
 This project demonstrates how to build a complete RAG pipeline including:
 
+- both REST API and CLI interfaces for querying the system
 - document ingestion
 - semantic vector indexing
 - retrieval
@@ -209,6 +210,39 @@ Example response:
   "answer": "..."
 }
 ```
+
+---
+
+##🖥LI Usage
+
+In addition to the REST API, the system provides a command-line interface for direct interaction.
+
+### Run CLI
+
+```bash
+python -m app.cli
+```
+
+### Interactive Mode
+
+```text
+>> What is preventive maintenance?
+>> How to troubleshoot pump failure?
+```
+
+Type `exit` to stop the CLI.
+
+---
+
+## CLI vs API
+
+Both CLI and API use the same core RAG logic (`rag.py`), ensuring consistent responses across interfaces.
+
+| Interface | Usage                             |
+| --------- | --------------------------------- |
+| CLI       | Local, quick interaction          |
+| API       | Integration with external systems |
+
 
 ---
 
