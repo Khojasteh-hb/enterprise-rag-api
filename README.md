@@ -98,12 +98,12 @@ The system is designed with a provider abstraction layer, allowing easy switchin
 enterprise-rag
 │
 ├── app
-│   ├── server.py
-│   ├── ask.py
-│   ├── build_index.py
-│   ├── cli.py
+│   ├── server.py         # FastAPI enrypoint
+│   ├── cli.py            # Command-line interface
+│   ├── rag.py            # Core RAG logic (retrieval + generation)
+│   ├── build_index.py    # FAISS index builder
 │   └── llm
-│       └── provider.py
+│       └── provider.py   # LLM abstraction layer
 │
 ├── data
 │   └── sample.txt
