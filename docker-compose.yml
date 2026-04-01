@@ -12,6 +12,3 @@ services:
     volumes:
       - ./data:/app/data
       - ./vectorstore:/app/vectorstore
-
-    environment:
-      - OLLAMA_BASE_URL=http://host.docker.internal:11434
