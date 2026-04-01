@@ -297,8 +297,9 @@ docker compose up -d --build
 Access the API:
 
 ```bash
-http://EC2_PUBLIC_IP:8000/docs
+http://13.48.1.178:8000/docs
 ```
+> Note: The public IP may change if the EC2 instance is restarted.
 
 ---
 
