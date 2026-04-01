@@ -1,7 +1,12 @@
-from app.ask import query_index
+# app/cli.py
+
+from dotenv import load_dotenv
+load_dotenv()
+
+from app.rag import ask_question
 
 
-def run_cli():
+def main():
     print("RAG CLI ready. Type your question (or 'exit' to quit):\n")
 
     while True:
@@ -10,15 +15,9 @@ def run_cli():
         if question.lower() == "exit":
             break
 
-        results = query_index(question)
-
-        print("\nTop relevant chunks:\n")
-
-        for i, doc in enumerate(results, 1):
-            print(f"Result {i}:")
-            print(doc)
-            print("-" * 50)
+        answer = ask_question(question)
+        print("\n", answer, "\n")
 
 
 if __name__ == "__main__":
-    run_cli()
+    main()
